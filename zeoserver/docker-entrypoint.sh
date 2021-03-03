@@ -1,7 +1,8 @@
 #! /bin/sh
-INSTANCE_HOME="/plone"
-CONFIG_FILE="/plone/etc/zeo.conf"
-ZEO_RUN="/plone/bin/runzeo"
+INSTANCE_HOME="/app"
+CONFIG_FILE="/app/etc/zeo.conf"
+ZEO_RUN="/app/bin/runzeo"
 export INSTANCE_HOME
 
+[[ -d "/data/filestorage" ]] || mkdir /data/filestorage
 exec "$ZEO_RUN" -C "$CONFIG_FILE" "$@"

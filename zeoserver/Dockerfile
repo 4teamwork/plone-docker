@@ -3,42 +3,43 @@ FROM python:2.7-alpine as build-stage
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
 
-RUN mkdir -p /plone
+RUN mkdir -p /app
 
 RUN apk add --no-cache --virtual .build-deps \
     gcc \
     libc-dev \
     zlib-dev
 
-WORKDIR /plone
+WORKDIR /app
 
-RUN pip install virtualenv && virtualenv .
+RUN pip install virtualenv \
+ && virtualenv .
+
+ENV VIRTUAL_ENV=/app
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
 COPY versions.txt ./
-RUN /plone/bin/pip install --no-cache-dir ZODB3 -c versions.txt
 
-RUN mkdir -p /data/filestorage /data/blobstorage /plone/var
-RUN chown -R plone:plone /data /plone/var
-COPY etc /plone/etc
+RUN pip install --no-cache-dir ZODB3 -c versions.txt
 
+RUN mkdir -p /app/var
+RUN chown -R plone:plone /app/var
+COPY etc /app/etc
+COPY docker-entrypoint.sh /app/
 
 FROM python:2.7-alpine
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
 
-COPY --from=build-stage /plone /plone
+COPY --from=build-stage /app /app
 
-RUN mkdir -p /data/filestorage /data/blobstorage
-# Currently ownership and permissions are not preserved when copying from
-# another stage. Should be fixed with Docker 19.03 or later 
-# https://github.com/moby/moby/pull/38599
-RUN chown -R plone:plone /data /plone/var
+RUN mkdir -p /data \
+ && chown -R plone:plone /data
 
 VOLUME /data
-
 USER plone
 EXPOSE 8100
-WORKDIR /plone
+WORKDIR /app
 
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/app/docker-entrypoint.sh"]

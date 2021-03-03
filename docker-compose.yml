@@ -9,4 +9,11 @@ services:
       - ./data:/data
     ports:
       - "8080:8080"
-
+    environment:
+      - STORAGE=zeoclient
+  zeoserver:
+    build:
+      context: ./zeoserver
+    image: 4teamwork/zeoserver:latest
+    volumes:
+      - ./data:/data
