@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  plone:
+    build:
+      context: ./4.3
+    image: 4teamwork/plone:latest
+    volumes:
+      - ./data:/data
+    ports:
+      - "8080:8080"
+
