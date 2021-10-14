@@ -1,16 +1,21 @@
-FROM python:2.7-alpine as build-stage
+FROM alpine:3.14 as build-stage
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
 
 RUN mkdir -p /app
 
-RUN apk add --no-cache --virtual .build-deps \
+RUN --mount=type=cache,target=/var/cache/apk apk add --virtual .build-deps \
     gcc \
     libc-dev \
-    zlib-dev
+    zlib-dev \
+    python2-dev \
+    py2-setuptools
 
 WORKDIR /app
+
+RUN wget https://github.com/pypa/get-pip/raw/20.3.4/2.7/get-pip.py
+RUN python get-pip.py
 
 RUN pip install virtualenv \
  && virtualenv .
@@ -20,17 +25,20 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 COPY versions.txt ./
 
-RUN pip install --no-cache-dir ZODB3 -c versions.txt
+RUN --mount=type=cache,target=/root/.cache pip install ZODB3 -c versions.txt
 
 RUN mkdir -p /app/var
 RUN chown -R plone:plone /app/var
 COPY etc /app/etc
 COPY docker-entrypoint.sh /app/
 
-FROM python:2.7-alpine
+FROM alpine:3.14
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
+
+RUN --mount=type=cache,target=/var/cache/apk apk add --virtual .build-deps \
+    python2
 
 COPY --from=build-stage /app /app
 

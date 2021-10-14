@@ -1,4 +1,4 @@
-FROM python:2.7-alpine AS build-stage
+FROM alpine:3.14 AS build-stage
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
@@ -13,9 +13,14 @@ RUN apk add --no-cache --virtual .build-deps \
     libpng-dev \
     libxml2-dev \
     libxslt-dev \
+    python2-dev \
+    py2-setuptools \
     gettext
 
 WORKDIR /app
+
+RUN wget https://github.com/pypa/get-pip/raw/20.3.4/2.7/get-pip.py
+RUN python get-pip.py
 
 RUN pip install virtualenv \
  && virtualenv .
@@ -25,8 +30,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 COPY versions.txt ./
 
-# RUN --mount=type=cache,target=/root/.cache pip install Plone -c versions.txt
-RUN pip install --no-cache-dir Plone -c versions.txt
+RUN --mount=type=cache,target=/root/.cache pip install Plone -c versions.txt
 
 # Fix missing .mo files in p.a.discussion
 RUN find /app/lib/python2.7/site-packages/plone/app/discussion/i18n -name "*.po" | xargs -I@ sh -c 'msgfmt @ -o "$(dirname @)/$(basename @ .po)".mo'
@@ -37,7 +41,7 @@ RUN mkdir -p /app/var /app/etc \
 COPY etc /app/etc
 
 
-FROM python:2.7-alpine
+FROM alpine:3.14
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
@@ -45,7 +49,11 @@ RUN addgroup -S -g 800 plone \
 RUN apk add --no-cache \
     libxml2 \
     libxslt \
-    libjpeg-turbo
+    libjpeg-turbo \
+    python2
+
+RUN --mount=type=cache,target=/var/cache/apk apk add --virtual .build-deps \
+    python2
 
 COPY --from=build-stage /app /app
 
@@ -57,5 +65,4 @@ USER plone
 EXPOSE 8080
 WORKDIR /app
 
-# CMD ["/bin/sh"]
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
