@@ -5,7 +5,7 @@ RUN addgroup -S -g 800 plone \
 
 RUN mkdir -p /app
 
-RUN apk add --no-cache --virtual .build-deps \
+RUN --mount=type=cache,target=/var/cache/apk apk add --virtual .build-deps \
     gcc \
     libc-dev \
     zlib-dev \
@@ -46,7 +46,7 @@ FROM alpine:3.14
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
 
-RUN apk add --no-cache \
+RUN --mount=type=cache,target=/var/cache/apk apk add \
     libxml2 \
     libxslt \
     libjpeg-turbo \
