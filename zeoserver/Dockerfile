@@ -14,11 +14,9 @@ RUN --mount=type=cache,target=/var/cache/apk apk add --virtual .build-deps \
 
 WORKDIR /app
 
-RUN wget https://github.com/pypa/get-pip/raw/20.3.4/2.7/get-pip.py
-RUN python get-pip.py
-
-RUN pip install virtualenv \
- && virtualenv .
+RUN wget https://bootstrap.pypa.io/virtualenv/2.7/virtualenv.pyz \
+ && python virtualenv.pyz . \
+ && rm virtualenv.pyz
 
 ENV VIRTUAL_ENV=/app
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
