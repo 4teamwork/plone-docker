@@ -3,7 +3,7 @@ version: '3'
 services:
   plone:
     build:
-      context: ./4.3
+      context: ./plone
     image: 4teamwork/plone:latest
     volumes:
       - ./data:/data
