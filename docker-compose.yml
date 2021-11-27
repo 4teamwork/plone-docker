@@ -4,7 +4,7 @@ services:
   plone:
     build:
       context: ./plone
-    image: 4teamwork/plone:latest
+    image: 4teamwork/plone:4.3.20
     volumes:
       - ./data:/data
     ports:
@@ -14,6 +14,6 @@ services:
   zeoserver:
     build:
       context: ./zeoserver
-    image: 4teamwork/zeoserver:latest
+    image: 4teamwork/zeoserver:4.3.20
     volumes:
       - ./data:/data
