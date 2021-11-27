@@ -47,6 +47,7 @@ RUN --mount=type=cache,target=/var/cache/apk apk add \
     libxml2 \
     libxslt \
     libjpeg-turbo \
+    tzdata \
     python2
 
 RUN --mount=type=cache,target=/var/cache/apk apk add --virtual .build-deps \
@@ -57,6 +58,7 @@ COPY --from=build-stage /app /app
 RUN mkdir -p /data/filestorage /data/blobstorage \
  && chown -R plone:plone /data
 
+ENV TZ=Europe/Zurich
 VOLUME /data
 USER plone
 EXPOSE 8080
