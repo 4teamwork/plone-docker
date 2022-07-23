@@ -225,6 +225,7 @@ Products.MimetypesRegistry==2.0.11
 Products.OFSP==2.13.2
 Products.PasswordResetTool==2.0.19
 Products.PlacelessTranslationService==2.0.7
+Products.PloneHotfix20210518==1.6
 Products.PloneLanguageTool==3.2.10
 Products.PlonePAS==5.1.1
 Products.PloneTestCase==0.9.18
