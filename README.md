@@ -26,3 +26,19 @@ docker-compose up -d
 | ZSERVER_THREADS      | 1              |
 | DEBUG_MODE           | off            |
 | VERBOSE_SECURITY     | off            |
+
+
+## Building multi-platform images
+
+Create a builder instance:
+
+```
+docker buildx create --name plonebuilder --use --bootstrap
+```
+
+Build images:
+
+```
+docker buildx build --platform linux/amd64,linux/arm64 --tag 4teamwork/zeoserver:4.3.20 --push ./zeoserver
+docker buildx build --platform linux/amd64,linux/arm64 --tag 4teamwork/plone:4.3.20 --push ./plone
+```
