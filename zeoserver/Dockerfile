@@ -5,7 +5,7 @@ RUN addgroup -S -g 800 plone \
 
 RUN mkdir -p /app
 
-RUN --mount=type=cache,target=/var/cache/apk apk add --virtual .build-deps \
+RUN apk add --virtual .build-deps \
     gcc \
     libc-dev \
     zlib-dev \
@@ -35,7 +35,7 @@ FROM alpine:3.14
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
 
-RUN --mount=type=cache,target=/var/cache/apk apk add \
+RUN apk add \
     python2
 
 COPY --from=build-stage /app /app
