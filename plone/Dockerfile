@@ -1,4 +1,4 @@
-FROM alpine:3.14 AS build-stage
+FROM 4teamwork/python:2.7 as build-stage
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
@@ -13,21 +13,16 @@ RUN apk add --virtual .build-deps \
     libpng-dev \
     libxml2-dev \
     libxslt-dev \
-    python2-dev \
     gettext
 
 WORKDIR /app
 
-RUN wget https://bootstrap.pypa.io/virtualenv/2.7/virtualenv.pyz \
- && python virtualenv.pyz . \
- && rm virtualenv.pyz
-
-ENV VIRTUAL_ENV=/app
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN echo "/app/lib/python2.7/site-packages/" > /usr/local/lib/python2.7/site-packages/app.pth
 
 COPY versions.txt ./
 
-RUN --mount=type=cache,target=/root/.cache pip install Plone Products.PloneHotfix20210518 -c versions.txt
+RUN --mount=type=cache,target=/root/.cache pip install --prefix /app Plone Products.PloneHotfix20210518 -c versions.txt
+
 
 # Fix missing .mo files in p.a.discussion
 RUN find /app/lib/python2.7/site-packages/plone/app/discussion/i18n -name "*.po" | xargs -I@ sh -c 'msgfmt @ -o "$(dirname @)/$(basename @ .po)".mo'
@@ -38,7 +33,7 @@ RUN mkdir -p /app/var /app/etc \
 COPY etc /app/etc
 
 
-FROM alpine:3.14
+FROM 4teamwork/python:2.7
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
@@ -47,13 +42,11 @@ RUN apk add \
     libxml2 \
     libxslt \
     libjpeg-turbo \
-    tzdata \
-    python2
-
-RUN --mount=type=cache,target=/var/cache/apk apk add --virtual .build-deps \
-    python2
+    tzdata
 
 COPY --from=build-stage /app /app
+RUN echo "/app/lib/python2.7/site-packages/" > /usr/local/lib/python2.7/site-packages/app.pth \
+ && echo "import site; site.addsitedir('/app/lib/python2.7/site-packages')" > /usr/local/lib/python2.7/site-packages/sitecustomize.py
 
 RUN mkdir -p /data/filestorage /data/blobstorage \
  && chown -R plone:plone /data
