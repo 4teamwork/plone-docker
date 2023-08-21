@@ -23,6 +23,8 @@ COPY versions.txt ./
 
 RUN --mount=type=cache,target=/root/.cache pip install --prefix /app Plone Products.PloneHotfix20210518 -c versions.txt
 
+COPY ./patches/z3c_autoinclude_utils.py /app/lib/python2.7/site-packages/z3c/autoinclude/utils.py
+RUN python2.7 -m compileall /app/lib/python2.7/site-packages/z3c/autoinclude/utils.py
 
 # Fix missing .mo files in p.a.discussion
 RUN find /app/lib/python2.7/site-packages/plone/app/discussion/i18n -name "*.po" | xargs -I@ sh -c 'msgfmt @ -o "$(dirname @)/$(basename @ .po)".mo'
