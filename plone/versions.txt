@@ -80,7 +80,7 @@ PasteScript==1.7.5
 pep8==1.5.7
 Persistence==2.13.2
 PIL==1.1.7
-Pillow==3.3.3
+Pillow==6.2.2
 plone.alterego==1.1.5
 plone.api==1.10.2
 plone.app.blob==1.5.19
