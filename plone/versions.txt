@@ -8,7 +8,7 @@ Babel==1.3
 babel==1.3
 borg.localrole==3.0.3
 buildout.dumppickedversions==0.5
-certifi==2018.11.29
+certifi==2020.04.05.1
 chardet==3.0.4
 ClientForm==0.2.10
 collective.elephantvocabulary==0.2.5
@@ -41,7 +41,7 @@ five.globalrequest==1.0
 five.grok==1.3.2
 five.intid==1.0.3
 five.localsitemanager==2.0.6
-future==0.13.1
+future==0.18.3
 grokcore.annotation==1.3
 grokcore.component==2.5.1
 grokcore.formlib==1.9
@@ -56,14 +56,14 @@ importlib-metadata==1.3.0
 importlib-resources==1.0.2
 importlib==1.0.4
 initgroups==2.13.0
-Jinja2==2.7.3
-lxml==4.2.6
+Jinja2==2.11.3
+lxml==4.9.4
 mailinglogger==3.7.0
 manuel==1.8.0
 Markdown==2.0.3
 MarkupSafe==1.1.1
 martian==0.14
-mechanize==0.2.5
+mechanize==0.4.8
 Missing==2.13.1
 mock==1.0.1
 mocker==1.1.1
@@ -103,7 +103,7 @@ plone.app.i18n==2.0.3
 plone.app.imaging==1.0.14
 plone.app.intid==1.0.5
 plone.app.iterate==2.1.18
-plone.app.jquery==1.7.2.1
+plone.app.jquery==1.11.2
 plone.app.jquerytools==1.9.5
 plone.app.layout==2.3.20
 plone.app.linkintegrity==1.5.10
@@ -126,7 +126,7 @@ plone.app.tiles==3.1.1
 plone.app.upgrade==1.4.7
 plone.app.users==1.2.5
 plone.app.uuid==1.1.3
-plone.app.versioningbehavior==1.2.10
+plone.app.versioningbehavior==1.3.1
 plone.app.viewletmanager==2.0.12
 plone.app.vocabularies==2.1.25
 plone.app.widgets==1.8.0
@@ -165,7 +165,7 @@ plone.outputfilters==1.15.3
 plone.portlet.collection==2.1.10
 plone.portlet.static==2.0.4
 plone.portlets==2.2.3
-plone.protect==2.0.3
+plone.protect==3.1.2
 plone.recipe.alltests==1.5.2
 plone.recipe.zeoserver==1.3.1
 plone.recipe.zope2instance==4.4.1
@@ -241,7 +241,7 @@ Products.statusmessages==4.1.2
 Products.TemporaryFolder==3.0
 Products.TinyMCE==1.3.29
 Products.validation==2.0.2
-Products.ZCatalog==2.13.30
+Products.ZCatalog==3.0.2
 Products.ZCTextIndex==2.13.5
 Products.ZopeVersionControl==1.1.3
 Products.ZSQLMethods==2.13.6
@@ -250,14 +250,14 @@ Pygments==2.0.2
 python-dateutil==1.5
 python-gettext==1.0
 python-openid==2.2.5
-pytz==2013b
+pytz==2022.1
 Record==2.13.0
 repoze.retry==1.2
 repoze.tm2==1.0
 repoze.who==2.0
 repoze.xmliter==0.6
 requests-toolbelt==0.8.0
-requests==2.18.4
+requests==2.27.1
 RestrictedPython==3.6.0
 robotframework-debuglibrary==0.4
 robotframework-ride==1.5.2.1
@@ -271,7 +271,7 @@ select-backport==0.2
 selenium==2.53.6
 setuptools==44.1.1
 simplejson==2.5.2
-six==1.11.0
+six==1.15.0
 sphinx-rtd-theme==0.1.9
 Sphinx==1.1.3
 sphinxcontrib-robotframework==0.5.1
@@ -282,7 +282,7 @@ transaction==1.1.1
 twine==1.9.1
 Unidecode==0.04.1
 unittest2==0.5.1
-urllib3==1.22
+urllib3==1.26.18
 WebOb==1.4.2
 wicked==1.1.12
 wsgi-intercept==0.4
