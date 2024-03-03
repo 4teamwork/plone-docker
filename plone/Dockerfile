@@ -5,7 +5,7 @@ RUN addgroup -S -g 800 plone \
 
 RUN mkdir -p /app
 
-RUN apk add --virtual .build-deps \
+RUN apk -U upgrade && apk add \
     gcc \
     libc-dev \
     zlib-dev \
@@ -70,7 +70,7 @@ FROM 4teamwork/python:2.7
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
 
-RUN apk add \
+RUN apk update && apk add \
     libxml2 \
     libxslt \
     libjpeg-turbo \
