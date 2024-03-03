@@ -39,6 +39,6 @@ docker buildx create --name plonebuilder --use --bootstrap
 Build images:
 
 ```
-docker buildx build --platform linux/amd64,linux/arm64 --tag 4teamwork/zeoserver:4.3.20 --push ./zeoserver
-docker buildx build --platform linux/amd64,linux/arm64 --tag 4teamwork/plone:4.3.20 --push ./plone
+docker buildx build --platform linux/amd64,linux/arm64 --tag 4teamwork/zeoserver:4.3.20 --tag 4teamwork/zeoserver:4.3.20-alpine3.18 --push ./zeoserver
+docker buildx build --platform linux/amd64,linux/arm64 --tag 4teamwork/plone:4.3.20 --tag 4teamwork/plone:4.3.20-alpine3.18 --push ./plone
 ```
