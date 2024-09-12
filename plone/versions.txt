@@ -23,6 +23,7 @@ collective.z3cform.datetimewidget==1.2.9
 configparser==4.0.2
 contextlib2==0.6.0.post1
 coverage==4.2
+cssselect==1.0.3
 DateTime==3.0.3
 decorator==3.4.2
 diazo==1.1.3
