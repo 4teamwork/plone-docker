@@ -49,6 +49,7 @@ RUN --mount=type=cache,target=/root/.cache \
  && patch -p 1 -i /var/tmp/patches/CVE-2022-22815_CVE-2022-22816.patch \
  && patch -p 1 -i /var/tmp/patches/CVE-2023-44271.patch \
  && patch -p 1 -i /var/tmp/patches/CVE-2023-50447.patch \
+ && patch -p 1 -i /var/tmp/patches/CVE-2024-28219.patch \
  && pip install /var/tmp/Pillow-6.2.2 --prefix /app
 
 RUN --mount=type=cache,target=/root/.cache pip install --prefix /app Plone Products.PloneHotfix20210518 -c versions.txt
