@@ -62,7 +62,7 @@ def relstorage_config(options):
     relstorage_options = ''
     for key in relstorage_keys:
         value = os.environ[key]
-        relstorage_options += '        {} {}'.format(
+        relstorage_options += '        {} {}\n'.format(
             key[11:].lower().replace('_', '-'), value)
 
     relstorage_db_keys = [
@@ -70,7 +70,7 @@ def relstorage_config(options):
     relstorage_db_options = ''
     for key in relstorage_db_keys:
         value = os.environ[key]
-        relstorage_db_options += '            {} {}'.format(
+        relstorage_db_options += '            {} {}\n'.format(
             key[14:].lower().replace('_', '-'), value)
 
     return RELSTORAGE_TEMPLATE.format(
@@ -167,7 +167,8 @@ RELSTORAGE_TEMPLATE = """\
 {relstorage_db_options}
         </{db_adapter}>
     </relstorage>
-<zodb_db main>
+    mount-point /
+</zodb_db>
 """
 
 if __name__ == "__main__":
