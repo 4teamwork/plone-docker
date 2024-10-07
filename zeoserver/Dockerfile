@@ -1,11 +1,11 @@
-FROM 4teamwork/python:2.7 as build-stage
+FROM 4teamwork/python:2.7-alpine3.20 as build-stage
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
 
 RUN mkdir -p /app
 
-RUN apk add --virtual .build-deps \
+RUN apk add \
     gcc \
     libc-dev \
     zlib-dev
@@ -24,7 +24,7 @@ COPY etc /app/etc
 COPY docker-entrypoint.sh /app/
 
 
-FROM 4teamwork/python:2.7
+FROM 4teamwork/python:2.7-alpine3.20
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
