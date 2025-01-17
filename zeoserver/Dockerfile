@@ -1,4 +1,4 @@
-FROM 4teamwork/python:2.7-alpine3.20 as build-stage
+FROM 4teamwork/python:2.7-alpine3.20 AS build-stage
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
