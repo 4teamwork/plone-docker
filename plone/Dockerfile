@@ -60,10 +60,11 @@ RUN python2.7 -m compileall /app/lib/python2.7/site-packages/z3c/autoinclude/uti
 # Fix missing .mo files in p.a.discussion
 RUN find /app/lib/python2.7/site-packages/plone/app/discussion/i18n -name "*.po" | xargs -I@ sh -c 'msgfmt @ -o "$(dirname @)/$(basename @ .po)".mo'
 
-COPY docker-entrypoint.sh create_zope_conf.py inituser /app/
+COPY docker-entrypoint.sh inituser /app/
+COPY entrypoint.d /app/entrypoint.d
+COPY etc /app/etc
 RUN mkdir -p /app/var/instance /app/var/log /app/etc \
  && chown -R plone:plone /app/var /app/etc
-COPY etc /app/etc
 
 
 FROM 4teamwork/python:2.7-alpine3.20

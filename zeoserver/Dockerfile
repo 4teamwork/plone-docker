@@ -18,9 +18,10 @@ RUN echo "/app/lib/python2.7/site-packages/" > /usr/local/lib/python2.7/site-pac
 
 RUN --mount=type=cache,target=/root/.cache pip install --prefix /app ZODB3 -c versions.txt
 
-RUN mkdir -p /app/var/log /app/var/instance /app/etc \
- && chown plone:plone /app/var /app/etc
-COPY docker-entrypoint.sh create_zeo_conf.py /app/
+RUN mkdir -p /app/var/log /app/etc \
+ && chown -R plone:plone /app/var /app/etc
+COPY docker-entrypoint.sh /app/
+COPY entrypoint.d /app/entrypoint.d
 
 
 FROM 4teamwork/python:2.7-alpine3.20
