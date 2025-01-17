@@ -10,6 +10,19 @@ def to_bool(string):
     return False
 
 
+def parse_filestorage_options(value):
+    res = {}
+    filestorages = value.split(';')
+    for filestorage in filestorages:
+        storage_options = filestorage.split(',')
+        if storage_options:
+            storage_name = storage_options[0]
+            kwargs = dict([kwarg.split('=') for kwarg in storage_options[1:]])
+            res[storage_name] = {
+                k.replace('-', '_'): v for k, v in kwargs.items()}
+    return res
+
+
 def main():
     if len(sys.argv) < 2:
         sys.exit("Location for Zope configuration file required.")
@@ -23,26 +36,72 @@ def main():
         'zodb_cache_size': env.get('ZODB_CACHE_SIZE', 100000),
         'zserver_threads': env.get('ZSERVER_THREADS', 1),
         'zeo_address': env.get('ZEO_ADDRESS', 'zeoserver:8100'),
-        'storage': env.get('STORAGE', 'zeoclient')
+        'storage': env.get('STORAGE', 'zeoclient'),
     }
+
     if options['debug_mode'] == 'on':
         # Avoid duplicate log entries on console
         options['logfile_loglevel'] = 'CRITICAL'
     else:
         options['logfile_loglevel'] = 'INFO'
+
     if options['verbose_security'] == 'on':
         options['security_implementation'] = 'python'
 
     if options['storage'] == 'zeoclient':
-        zodb_main_storage = ZEO_STORAGE_TEMPLATE.format(**options)
+        zodb_main_storage = ZEO_STORAGE_TEMPLATE.format(
+            name='main',
+            blob_dir='/data/blobstorage',
+            zeoclient_name='zeostorage',
+            zeoclient_storage='1',
+            mountpoint='/',
+            **options)
+        filestorages = env.get('FILESTORAGES')
+        if filestorages:
+            for storage_name, storage_options in parse_filestorage_options(
+                filestorages
+            ).items():
+                default_options = {
+                    'zodb_cache_size': options['zodb_cache_size'],
+                    'zeo_address': options['zeo_address'],
+                    'blob_dir': '/data/blobstorage-{}'.format(storage_name),
+                    'zeoclient_name': '{}_zeostorage'.format(storage_name),
+                    'zeoclient_storage': storage_name,
+                    'mountpoint': '/{}'.format(storage_name),
+                }
+                default_options.update(storage_options)
+                zodb_main_storage += '\n'
+                zodb_main_storage += ZEO_STORAGE_TEMPLATE.format(
+                    name=storage_name, **default_options)
+
     elif options['storage'] == 'relstorage':
         zodb_main_storage = relstorage_config(options)
     else:
-        zodb_main_storage = FILESTORAGE_TEMPLATE.format(**options)
+        zodb_main_storage = FILESTORAGE_TEMPLATE.format(
+            name='main',
+            path='/data/filestorage/Data.fs',
+            blob_dir='/data/blobstorage',
+            mountpoint='/',
+            **options)
         if not os.path.exists('/data/filestorage'):
             os.mkdir('/data/filestorage')
         if not os.path.exists('/data/blobstorage'):
             os.mkdir('/data/blobstorage')
+        filestorages = env.get('FILESTORAGES')
+        if filestorages:
+            for storage_name, storage_options in parse_filestorage_options(
+                filestorages
+            ).items():
+                default_options = {
+                    'zodb_cache_size': options['zodb_cache_size'],
+                    'path': '/data/filestorage/Data.fs',
+                    'blob_dir': '/data/blobstorage-{}'.format(storage_name),
+                    'mountpoint': '/{}'.format(storage_name),
+                }
+                default_options.update(storage_options)
+                zodb_main_storage += '\n'
+                zodb_main_storage += FILESTORAGE_TEMPLATE.format(
+                    name=storage_name, **default_options)
 
     zope_conf = ZOPE_CONF_TEMPLATE.format(
         zodb_main_storage=zodb_main_storage, **options)
@@ -82,7 +141,7 @@ def relstorage_config(options):
 
 ZOPE_CONF_TEMPLATE = """\
 instancehome /app
-clienthome /app/var
+clienthome /app/var/instance
 debug-mode {debug_mode}
 security-policy-implementation {security_implementation}
 verbose-security {verbose_security}
@@ -99,7 +158,7 @@ trusted-proxy 127.0.0.1
 <eventlog>
   level INFO
   <logfile>
-    path STDERR
+    path /app/var/log/instance.log
     level {logfile_loglevel}
   </logfile>
 </eventlog>
@@ -128,32 +187,32 @@ trusted-proxy 127.0.0.1
 """
 
 ZEO_STORAGE_TEMPLATE = """\
-<zodb_db main>
+<zodb_db {name}>
     cache-size {zodb_cache_size}
     <zeoclient>
       read-only false
       read-only-fallback false
-      blob-dir /data/blobstorage
+      blob-dir {blob_dir}
       shared-blob-dir on
       server {zeo_address}
-      storage 1
-      name zeostorage
+      storage {zeoclient_storage}
+      name {zeoclient_name}
       cache-size 128MB
     </zeoclient>
-    mount-point /
+    mount-point {mountpoint}
 </zodb_db>
 """
 
 FILESTORAGE_TEMPLATE = """\
-<zodb_db main>
+<zodb_db {name}>
     cache-size {zodb_cache_size}
     <blobstorage>
-      blob-dir /data/blobstorage
+      blob-dir {blob_dir}
       <filestorage>
-        path /data/filestorage/Data.fs
+        path {path}
       </filestorage>
     </blobstorage>
-    mount-point /
+    mount-point {mountpoint}
 </zodb_db>
 """
 

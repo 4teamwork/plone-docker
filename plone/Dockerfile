@@ -61,7 +61,7 @@ RUN python2.7 -m compileall /app/lib/python2.7/site-packages/z3c/autoinclude/uti
 RUN find /app/lib/python2.7/site-packages/plone/app/discussion/i18n -name "*.po" | xargs -I@ sh -c 'msgfmt @ -o "$(dirname @)/$(basename @ .po)".mo'
 
 COPY docker-entrypoint.sh create_zope_conf.py inituser /app/
-RUN mkdir -p /app/var /app/etc \
+RUN mkdir -p /app/var/instance /app/var/log /app/etc \
  && chown -R plone:plone /app/var /app/etc
 COPY etc /app/etc
 

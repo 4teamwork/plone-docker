@@ -27,6 +27,16 @@ docker-compose up -d
 | DEBUG_MODE           | off            |
 | VERBOSE_SECURITY     | off            |
 
+### Additional filestorages
+
+Additional filestorages can be added with the `FILESTORAGES` environment variable.
+Filestorage options are separated by a comma and filestorags are separated by a semicolon.
+
+Example:
+
+```
+FILESTORAGES='mystorage,zodb-cache-size=5000;otherstorage,mountpoint=/foo:/bar'
+```
 
 ## Building multi-platform images
 
