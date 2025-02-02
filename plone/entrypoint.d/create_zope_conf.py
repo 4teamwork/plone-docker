@@ -56,7 +56,7 @@ def main():
             zeoclient_storage='1',
             mountpoint='/',
             **options)
-        filestorages = env.get('FILESTORAGES')
+        filestorages = env.get('ADDITIONAL_FILESTORAGES')
         if filestorages:
             for storage_name, storage_options in parse_filestorage_options(
                 filestorages
@@ -87,7 +87,7 @@ def main():
             os.mkdir('/data/filestorage')
         if not os.path.exists('/data/blobstorage'):
             os.mkdir('/data/blobstorage')
-        filestorages = env.get('FILESTORAGES')
+        filestorages = env.get('ADDITIONAL_FILESTORAGES')
         if filestorages:
             for storage_name, storage_options in parse_filestorage_options(
                 filestorages

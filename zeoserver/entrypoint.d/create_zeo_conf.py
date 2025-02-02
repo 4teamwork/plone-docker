@@ -28,7 +28,7 @@ def main():
         path='/data/filestorage/Data.fs',
         blob_dir='/data/blobstorage',
     )
-    additional_filestorages = env.get('FILESTORAGES')
+    additional_filestorages = env.get('ADDITIONAL_FILESTORAGES')
     if additional_filestorages:
         for storage_name, _ in parse_filestorage_options(
             additional_filestorages

@@ -29,13 +29,15 @@ docker-compose up -d
 
 ### Additional filestorages
 
-Additional filestorages can be added with the `FILESTORAGES` environment variable.
-Filestorage options are separated by a comma and filestorags are separated by a semicolon.
+Additional filestorages can be added with the `ADDITIONAL_FILESTORAGES` environment
+variable. For each filestorage a name must be provided. Multiple filestorages
+are separated by a semicolon. Filestorage options can be given after the filestorage
+name and are separated by a comma. 
 
 Example:
 
 ```
-FILESTORAGES='mystorage,zodb-cache-size=5000;otherstorage,mountpoint=/foo:/bar'
+ADDITIONAL_FILESTORAGES='mystorage,zodb-cache-size=5000;otherstorage,mountpoint=/foo:/bar'
 ```
 
 ## Building multi-platform images
