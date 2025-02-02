@@ -64,7 +64,8 @@ COPY docker-entrypoint.sh inituser /app/
 COPY entrypoint.d /app/entrypoint.d
 COPY etc /app/etc
 RUN mkdir -p /app/var/instance /app/var/log /app/etc \
- && chown -R plone:plone /app/var /app/etc
+ && chown -R plone:plone /app/var /app/etc \
+ && ln -sf /dev/stderr /app/var/log/instance.log
 
 
 FROM 4teamwork/python:2.7-alpine3.20
