@@ -1,4 +1,5 @@
-FROM 4teamwork/python:2.7-alpine3.20 AS build-stage
+ARG ALPINE_VERSION=3.22
+FROM 4teamwork/python:2.7-alpine${ALPINE_VERSION} AS build-stage
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone
@@ -71,7 +72,7 @@ RUN mkdir -p /app/var/instance /app/var/log /app/etc \
  && ln -sf /dev/stderr /app/var/log/instance.log
 
 
-FROM 4teamwork/python:2.7-alpine3.20
+FROM 4teamwork/python:2.7-alpine${ALPINE_VERSION}
 
 RUN addgroup -S -g 800 plone \
  && adduser -S -D -G plone -u 800 plone

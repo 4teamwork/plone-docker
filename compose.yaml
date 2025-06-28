@@ -2,6 +2,8 @@ services:
   plone:
     build:
       context: ./plone
+      args:
+        ALPINE_VERSION: ${ALPINE_VERSION:-3.22}
     image: 4teamwork/plone:4.3.20
     volumes:
       - ./data:/data
@@ -11,6 +13,8 @@ services:
   zeoserver:
     build:
       context: ./zeoserver
+      args:
+        ALPINE_VERSION: ${ALPINE_VERSION:-3.22}
     image: 4teamwork/zeoserver:4.3.20
     volumes:
       - ./data:/data
