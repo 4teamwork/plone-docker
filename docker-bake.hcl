@@ -4,7 +4,6 @@ group "default" {
 
 target "plone" {
   name = "plone-alpine${replace(alpine_version, ".", "-")}"
-  dockerfile = "./plone/Dockerfile"
   context = "./plone"
   matrix = {
     alpine_version = ["3.20", "3.21", "3.22"]
@@ -24,7 +23,6 @@ target "plone" {
 
 target "zeoserver" {
   name = "zeoserver-alpine${replace(alpine_version, ".", "-")}"
-  dockerfile = "./zeoserver/Dockerfile"
   context = "./zeoserver"
   matrix = {
     alpine_version = ["3.20", "3.21", "3.22"]
