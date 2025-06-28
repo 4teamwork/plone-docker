@@ -31,8 +31,8 @@ target "zeoserver" {
     ALPINE_VERSION = alpine_version
   }
   tags = [
-    "docker.io/teamwork/zeoserver:4.3.20-alpine${alpine_version}",
-    equal(alpine_version, "3.22") ? "docker.io/teamwork/zeoserver:4.3.20" : "",
+    "docker.io/4teamwork/zeoserver:4.3.20-alpine${alpine_version}",
+    equal(alpine_version, "3.22") ? "docker.io/4teamwork/zeoserver:4.3.20" : "",
   ]
   platforms = [
     "linux/amd64",
