@@ -37,6 +37,7 @@ def main():
         'zserver_threads': env.get('ZSERVER_THREADS', 1),
         'zeo_address': env.get('ZEO_ADDRESS', 'zeoserver:8100'),
         'storage': env.get('STORAGE', 'zeoclient'),
+        'read_only': env.get('READ_ONLY', 'false'),
     }
 
     if options['debug_mode'] == 'on':
@@ -190,7 +191,7 @@ ZEO_STORAGE_TEMPLATE = """\
 <zodb_db {name}>
     cache-size {zodb_cache_size}
     <zeoclient>
-      read-only false
+      read-only {read_only}
       read-only-fallback false
       blob-dir {blob_dir}
       shared-blob-dir on

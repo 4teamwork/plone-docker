@@ -26,6 +26,7 @@ docker-compose up -d
 | ZSERVER_THREADS      | 1              |
 | DEBUG_MODE           | off            |
 | VERBOSE_SECURITY     | off            |
+| READ_ONLY            | false          |
 
 ### Additional filestorages
 
