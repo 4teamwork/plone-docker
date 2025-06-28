@@ -53,7 +53,8 @@ RUN --mount=type=cache,target=/root/.cache \
  && patch -p 1 -i /var/tmp/patches/CVE-2024-28219.patch \
  && pip install /var/tmp/Pillow-6.2.2 --prefix /app
 
-RUN --mount=type=cache,target=/root/.cache pip install --prefix /app Plone Products.PloneHotfix20210518 cssselect -c versions.txt
+RUN --mount=type=cache,target=/root/.cache export CFLAGS=-Wno-error=incompatible-pointer-types \
+ && pip install --prefix /app Plone Products.PloneHotfix20210518 cssselect -c versions.txt
 
 COPY ./patches/z3c_autoinclude_utils.py /app/lib/python2.7/site-packages/z3c/autoinclude/utils.py
 RUN python2.7 -m compileall /app/lib/python2.7/site-packages/z3c/autoinclude/utils.py
